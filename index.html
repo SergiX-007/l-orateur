@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/x-icon" href="./src/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="./src/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./src/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./src/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./src/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./src/android-chrome-512x512.png">
+<link rel="manifest" href="./src/site.webmanifest">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -22,28 +29,10 @@ html{ scroll-padding-top:96px; }
 body{ margin:0; background:var(--fond); color:var(--encre); font-family:var(--texte); }
 a{ color:var(--encre); text-decoration:none; }
 a:hover{ color:var(--doux); }
-@keyframes filigrane{
-  0%{ transform:translate3d(0,0,0); }
-  12%{ transform:translate3d(-32vw,0,0); }
-  24%{ transform:translate3d(-32vw,26vh,0); }
-  38%{ transform:translate3d(0,30vh,0); }
-  50%{ transform:translate3d(30vw,22vh,0); }
-  62%{ transform:translate3d(32vw,-24vh,0); }
-  76%{ transform:translate3d(0,-30vh,0); }
-  88%{ transform:translate3d(-28vw,-22vh,0); }
-  100%{ transform:translate3d(0,0,0); }
-}
-@media (prefers-reduced-motion: reduce){ .filigrane{ animation:none; } }
 </style>
 </helmet>
 
 <div style="position:relative; min-height:calc(100vh - 78px); background:var(--fond); overflow:hidden;">
-
-  <sc-if value="{{ fondAnime }}" hint-placeholder-val="{{ true }}">
-    <div aria-hidden="true" style="position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;">
-      <div class="filigrane" style="position:absolute; top:50%; left:50%; width:52vh; height:72vh; margin:-36vh 0 0 -26vh; border-style:solid; border-color:var(--sourd); border-left-width:9px; border-right-width:9px; border-top-width:2px; border-bottom-width:2px; border-radius:50%; animation:filigrane 96s linear infinite; will-change:transform;"></div>
-    </div>
-  </sc-if>
 
   <div style="position:relative; z-index:1;">
 
@@ -392,7 +381,7 @@ a:hover{ color:var(--doux); }
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;intensiteMouvement&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:100,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:5,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Mouvement&quot;},&quot;fondAnime&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mouvement&quot;},&quot;notesEnMarge&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mise en page&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;notesEnMarge&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mise en page&quot;}}">
 class Component extends DCLogic {
   state = { sombre: false, page: "accueil" };
 
@@ -405,13 +394,6 @@ class Component extends DCLogic {
     window.scrollTo(0, 0);
   };
 
-  constructor(props){
-    super(props);
-    this.filRef = React.createRef();
-    this.px = 0; this.py = 0; this.cible = 0; this.pause = 0;
-    this.cibles = [ {x:-0.34,y:0}, {x:0,y:0.3}, {x:0,y:-0.3}, {x:0.34,y:0}, {x:-0.2,y:0.22}, {x:0.2,y:-0.22} ];
-  }
-
   componentDidMount(){
     this.sync();
     window.addEventListener("hashchange", this.sync);
@@ -422,7 +404,6 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount(){
-    if(this.minuteur) clearInterval(this.minuteur);
     window.removeEventListener("hashchange", this.sync);
   }
 
@@ -435,17 +416,6 @@ class Component extends DCLogic {
     const s = !this.state.sombre;
     try { localStorage.setItem("orateur-theme", s ? "dark" : "light"); } catch(e){}
     this.appliquer(s);
-  };
-
-  deplacer = () => {
-    const el = this.filRef.current;
-    if(!el) return;
-    const k = (this.props.intensiteMouvement ?? 40) / 100;
-    const c = this.cibles[this.cible];
-    this.cible = (this.cible + 1) % this.cibles.length;
-    const x = c.x * window.innerWidth * k;
-    const y = c.y * window.innerHeight * k;
-    el.style.transform = "translate3d(" + x.toFixed(0) + "px," + y.toFixed(0) + "px,0)";
   };
 
   renderVals(){
@@ -463,9 +433,7 @@ class Component extends DCLogic {
       clair: !this.state.sombre,
       basculer: this.basculer,
       themeLabel: this.state.sombre ? "Passer en mode clair" : "Passer en mode sombre",
-      filRef: this.filRef,
-      notesEnMarge: this.props.notesEnMarge ?? true,
-      fondAnime: this.props.fondAnime ?? true
+      notesEnMarge: this.props.notesEnMarge ?? true
     };
   }
 }
