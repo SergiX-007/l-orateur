@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+:root{
+  --fond:#ffffff; --encre:#111111; --doux:#7a7a7a; --sourd:#ededed; --voile:rgba(17,17,17,.035);
+  --titre:"Times New Roman", Times, serif;
+  --texte:"Times New Roman", Times, serif;
+}
+:root[data-theme="dark"]{
+  --fond:#242424; --encre:#f2f2f2; --doux:#a2a2a2; --sourd:#3a3a3a; --voile:rgba(255,255,255,.055);
+}
+*{ box-sizing:border-box; }
+html{ scroll-padding-top:96px; }
+body{ margin:0; background:var(--fond); color:var(--encre); font-family:var(--texte); }
+a{ color:var(--encre); text-decoration:none; }
+a:hover{ color:var(--doux); }
+@keyframes filigrane{
+  0%{ transform:translate3d(0,0,0); }
+  12%{ transform:translate3d(-32vw,0,0); }
+  24%{ transform:translate3d(-32vw,26vh,0); }
+  38%{ transform:translate3d(0,30vh,0); }
+  50%{ transform:translate3d(30vw,22vh,0); }
+  62%{ transform:translate3d(32vw,-24vh,0); }
+  76%{ transform:translate3d(0,-30vh,0); }
+  88%{ transform:translate3d(-28vw,-22vh,0); }
+  100%{ transform:translate3d(0,0,0); }
+}
+@media (prefers-reduced-motion: reduce){ .filigrane{ animation:none; } }
+</style>
+</helmet>
+
+<div style="position:relative; min-height:calc(100vh - 78px); background:var(--fond); overflow:hidden;">
+
+  <sc-if value="{{ fondAnime }}" hint-placeholder-val="{{ true }}">
+    <div aria-hidden="true" style="position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;">
+      <div class="filigrane" style="position:absolute; top:50%; left:50%; width:52vh; height:72vh; margin:-36vh 0 0 -26vh; border-style:solid; border-color:var(--sourd); border-left-width:9px; border-right-width:9px; border-top-width:2px; border-bottom-width:2px; border-radius:50%; animation:filigrane 96s linear infinite; will-change:transform;"></div>
+    </div>
+  </sc-if>
+
+  <div style="position:relative; z-index:1;">
+
+    <header style="position:fixed; top:0; left:0; right:0; z-index:9; background:var(--fond);">
+      <div style="max-width:1180px; margin:0 auto; padding:0 34px; min-height:78px; display:flex; align-items:center; justify-content:space-between; gap:34px; flex-wrap:wrap;">
+        <a href="#accueil" style="display:flex; align-items:center; gap:14px;">
+          <span style="font-family:var(--titre); font-size:34px; line-height:1;">O</span>
+          <span style="font-family:var(--titre); font-size:12px; letter-spacing:.42em; text-transform:uppercase; color:var(--doux);">L'Orateur</span>
+        </a>
+        <nav aria-label="Rubriques" style="display:flex; align-items:center; gap:34px; flex-wrap:wrap; font-family:var(--texte); font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--doux);">
+          <a href="#jaurais-du-dire-ca" style="color:var(--doux);" style-hover="color:var(--encre);">Le feuilleton</a>
+          <a href="#savoir-ne-suffit-pas" style="color:var(--doux);" style-hover="color:var(--encre);">Le manuel</a>
+          <a href="#entretien-parcours" style="color:var(--doux);" style-hover="color:var(--encre);">L'audience</a>
+          <a href="#gagner-un-debat" style="color:var(--doux);" style-hover="color:var(--encre);">La contradiction</a>
+          <a href="#le-cours" style="color:var(--encre);" style-hover="color:var(--doux);">L'inscription</a>
+          <button type="button" onClick="{{ basculer }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="background:transparent; border:0; padding:6px; margin:0; cursor:pointer; color:var(--encre); display:flex; align-items:center; justify-content:center;">
+            <sc-if value="{{ sombre }}" hint-placeholder-val="{{ false }}">
+              <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="4" fill="currentColor"></circle><line x1="10" y1="1" x2="10" y2="4" stroke="currentColor" stroke-width="1"></line><line x1="10" y1="16" x2="10" y2="19" stroke="currentColor" stroke-width="1"></line><line x1="1" y1="10" x2="4" y2="10" stroke="currentColor" stroke-width="1"></line><line x1="16" y1="10" x2="19" y2="10" stroke="currentColor" stroke-width="1"></line><line x1="4" y1="4" x2="6" y2="6" stroke="currentColor" stroke-width="1"></line><line x1="14" y1="14" x2="16" y2="16" stroke="currentColor" stroke-width="1"></line><line x1="16" y1="4" x2="14" y2="6" stroke="currentColor" stroke-width="1"></line><line x1="6" y1="14" x2="4" y2="16" stroke="currentColor" stroke-width="1"></line></svg>
+            </sc-if>
+            <sc-if value="{{ clair }}" hint-placeholder-val="{{ true }}">
+              <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="currentColor"></circle><circle cx="14.5" cy="6.5" r="6" fill="var(--fond)"></circle></svg>
+            </sc-if>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="haut" style="max-width:1180px; margin:0 auto; padding:78px 34px 0;">
+
+      <sc-if value="{{ vAccueil }}" hint-placeholder-val="{{ true }}">
+      <section style="min-height:calc(100vh - 78px); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:60px 0;">
+        <h1 style="font-family:var(--titre); font-weight:400; font-size:clamp(52px,11vw,150px); line-height:.92; letter-spacing:.06em; margin:0;">L'ORATEUR</h1>
+        <p style="font-family:var(--texte); font-size:11px; letter-spacing:.42em; text-transform:uppercase; color:var(--doux); margin:38px 0 0;">Le journal de la prise de parole</p>
+      </section>
+      </sc-if>
+
+      <sc-if value="{{ v1 }}" hint-placeholder-val="{{ false }}">
+      <article id="jaurais-du-dire-ca" data-screen-label="Le feuilleton" style="display:flex; flex-wrap:wrap; gap:70px; justify-content:center; min-height:calc(100vh - 78px); padding:90px 0 130px;">
+        <div style="flex:1 1 560px; max-width:660px; min-width:0;">
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:0 0 22px;">Le feuilleton</p>
+          <h2 style="font-family:var(--titre); font-weight:400; font-size:clamp(36px,5.4vw,62px); line-height:1.06; letter-spacing:.01em; margin:0 0 24px; text-wrap:pretty;">J'aurais dû dire ça</h2>
+          <p style="font-family:var(--titre); font-style:italic; font-size:21px; line-height:1.5; color:var(--doux); margin:0 0 48px;">Je savais quoi dire. Je n'arrivais simplement pas à le faire ressentir.</p>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><span style="float:left; font-family:var(--titre); font-size:86px; line-height:.74; padding:8px 14px 0 0; color:var(--encre);">J</span>e savais parler français. À Maurice, on grandit entre le créole, le français et l'anglais, et j'étais plutôt à l'aise avec la langue. Pourtant, au lycée, prendre la parole devant les autres restait une épreuve. J'étais timide, j'avais facilement le trac, et le plus frustrant, c'est que je savais généralement ce que je voulais dire.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;">Le problème n'était pas la langue. Le problème, c'était le chemin entre ma tête et les oreilles des autres.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">I</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Parler longtemps pour ne rien dire</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;">Lors d'un concours de présentation, j'avais préparé mon sujet et je le connaissais. Mais une fois devant le public, j'ai parlé longtemps pour dire très peu de choses. Ma présentation ressemblait à une interminable formule de salutation : des mots, beaucoup de mots, et presque aucun message.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;">Dans les débats de classe, c'était l'inverse. J'avais des opinions, parfois des arguments solides, mais j'avais l'impression que chaque mot que je prononcerais pouvait se retourner contre moi. Alors je cherchais le mot exact, la phrase parfaite. Et pendant que je cherchais, le moment de parler passait.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">Avec le recul, ce n'était pas un manque de vocabulaire. C'était un manque de pratique, qui est la base même de l'éloquence.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">II</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">L'entretien qui m'a ouvert les yeux</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;">Des années plus tard, j'ai passé un entretien pour un poste d'assistant administratif. L'entreprise cherchait des compétences précises, et j'en maîtrisais plusieurs. Elles étaient même écrites sur mon CV.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;">Pourtant, pendant l'entretien, j'ai raconté mon parcours du début à la fin, étape par étape, sans jamais relier ce que je savais faire à ce que l'entreprise cherchait. Je suis sorti sans avoir mentionné les tâches qui auraient fait la différence.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;">Et dans la rue, en repensant aux questions, les bonnes réponses me sont toutes revenues. Je me suis dit, une fois de plus : « J'aurais dû dire ça. »</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">Ce jour-là, j'ai compris que les connaissances ne suffisent pas. Si on ne sait pas les montrer au bon moment, l'autre personne ne les voit jamais.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">III</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Des présentations, encore des présentations</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;">J'ai alors pris l'éloquence au sérieux. J'ai regardé énormément de contenus sur la prise de parole, observé comment les bons orateurs construisent leurs phrases, posent leurs silences et racontent. Surtout, j'ai pratiqué : j'ai fait des tonnes de présentations.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">L'une d'elles m'a marqué : une étude sur le requin pèlerin. Ce jour-là, j'ai ressenti pour la première fois une vraie sensation de victoire. Ce que j'avais en tête arrivait jusqu'au public. J'en suis sorti avec une satisfaction que je n'avais jamais connue en parlant devant les autres.</p>
+
+          <p style="font-family:var(--titre); font-style:italic; font-size:29px; line-height:1.42; text-align:center; color:var(--encre); margin:66px auto; max-width:540px;">Parler, ce n'est pas simplement passer une information. C'est faire ressentir cette information.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:0 0 14px;">IV</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Convaincre, ce n'est pas faire taire</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;">C'est là que ma vision de la parole a changé. Pour moi, gagner un débat ne signifie pas que l'adversaire reconnaisse sa défaite. Une personne peut perdre un débat sans changer d'avis une seule seconde.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">La vraie victoire, c'est quand l'autre ne dit pas « tu as gagné », mais « je n'avais jamais vu les choses comme ça ». C'est vrai dans un débat, dans une présentation, et dans un entretien : on ne cherche pas à réciter, on cherche à faire voir.</p>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:48px 0 0; color:var(--doux);">Si vous vous êtes reconnu dans cette histoire, sachez que ça se travaille. C'est exactement pour cela que j'ai créé mon cours d'éloquence. <a href="#le-cours" style="font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--encre); white-space:nowrap;">Le cours ›</a></p>
+        </div>
+        <sc-if value="{{ notesEnMarge }}" hint-placeholder-val="{{ true }}">
+          <aside style="flex:0 1 240px; align-self:flex-start; position:sticky; top:118px; background:var(--voile); padding:28px 26px; font-family:var(--texte);">
+            <p style="font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--doux); margin:0 0 20px;">Dans la même veine</p>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <a href="#savoir-ne-suffit-pas" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Savoir ne suffit pas</a>
+              <a href="#entretien-parcours" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Entretien : arrêtez de raconter votre parcours</a>
+              <a href="#gagner-un-debat" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Gagner un débat ne veut pas dire convaincre</a>
+            </div>
+          </aside>
+        </sc-if>
+      </article>
+
+      </sc-if>
+
+      <sc-if value="{{ v2 }}" hint-placeholder-val="{{ false }}">
+      <article id="savoir-ne-suffit-pas" data-screen-label="Le manuel 1" style="display:flex; flex-wrap:wrap; gap:70px; justify-content:center; min-height:calc(100vh - 78px); padding:90px 0 130px;">
+        <div style="flex:1 1 560px; max-width:660px; min-width:0;">
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:0 0 22px;">Le manuel</p>
+          <h2 style="font-family:var(--titre); font-weight:400; font-size:clamp(36px,5.4vw,62px); line-height:1.06; margin:0 0 24px; text-wrap:pretty;">Savoir ne suffit pas</h2>
+          <p style="font-family:var(--titre); font-style:italic; font-size:21px; line-height:1.5; color:var(--doux); margin:0 0 48px;">Vous connaissez la réponse. Alors pourquoi n'arrivez-vous pas à la donner ?</p>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><span style="float:left; font-family:var(--titre); font-size:86px; line-height:.74; padding:8px 14px 0 0;">C</span>'est l'une des expériences les plus frustrantes qui soient : connaître son sujet sur le bout des doigts, puis se retrouver bloqué au moment de l'expliquer. Si cela vous arrive, vous êtes loin d'être seul.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;">Selon un sondage Kantar, 68 % des personnes interrogées ressentent de la peur et du stress lorsqu'elles doivent prendre la parole en public, et 44 % déclarent ne jamais prendre la parole. Le même sondage montre que plus on est jeune, plus la difficulté est forte, et souligne l'absence de formation à la prise de parole pendant la scolarité.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">Autrement dit, on nous apprend à savoir, rarement à transmettre.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">I</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Trois obstacles entre l'idée et la parole</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">La structure.</strong> Dans notre tête, les idées arrivent en vrac. À l'oral, l'autre a besoin d'un ordre. Sans structure, on tourne autour du sujet, et c'est ainsi qu'on parle longtemps pour dire peu.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">La pression.</strong> Le regard des autres consomme une partie de notre attention. Une idée simple dans la salle de bain devient soudain difficile devant un jury.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;"><strong style="font-weight:700;">Le manque de pratique.</strong> Personne n'apprend à nager en lisant un livre. On nous fait écrire des dizaines de dissertations, mais combien de fois avez-vous vraiment pratiqué la parole avant votre premier oral important ?</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">II</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Une réalité bien mauricienne</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">À Maurice, beaucoup d'entre nous parlent créole à la maison, étudient en anglais ou en français, et passent leurs oraux et leurs entretiens dans une langue qui n'est pas celle du quotidien. Maîtriser la langue ne garantit donc pas qu'on sache s'y exprimer sous pression. Les deux compétences sont différentes, et la seconde s'entraîne.</p>
+
+          <div style="background:var(--voile); padding:34px 36px; margin:56px 0 0;">
+            <p style="font-family:var(--texte); font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--doux); margin:0 0 16px;">À essayer aujourd'hui</p>
+            <p style="font-family:var(--texte); font-size:18px; line-height:1.85; margin:0;">La règle du trois : avant de prendre la parole, formulez une idée, une raison, un exemple. Rien de plus. « Je pense que… parce que… par exemple… » Cette simple structure suffit à transformer une réponse confuse en réponse claire.</p>
+          </div>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:44px 0 0; color:var(--doux);">Dans mon cours d'éloquence, chaque séance est construite autour de la pratique : on ne parle pas de la parole, on parle. <a href="#le-cours" style="font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--encre); white-space:nowrap;">Le cours ›</a></p>
+          <p style="font-family:var(--texte); font-size:13px; color:var(--doux); margin:26px 0 0;">Source : sondage Kantar cité par <a href="https://www.cadre-dirigeant-magazine.com/reussir-en-entreprise/la-grande-peur-de-parler-en-public/" target="_blank" rel="noopener" style="color:var(--doux);">Cadre Dirigeant Magazine</a>.</p>
+        </div>
+        <sc-if value="{{ notesEnMarge }}" hint-placeholder-val="{{ true }}">
+          <aside style="flex:0 1 240px; align-self:flex-start; position:sticky; top:118px; background:var(--voile); padding:28px 26px; font-family:var(--texte);">
+            <p style="font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--doux); margin:0 0 20px;">Dans la même veine</p>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <a href="#le-mot-parfait" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Le mot parfait n'existe pas</a>
+              <a href="#le-trac" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Le trac n'est pas votre ennemi</a>
+              <a href="#jaurais-du-dire-ca" style="font-family:var(--titre); font-size:17px; line-height:1.4;">J'aurais dû dire ça</a>
+            </div>
+          </aside>
+        </sc-if>
+      </article>
+
+      </sc-if>
+
+      <sc-if value="{{ v3 }}" hint-placeholder-val="{{ false }}">
+      <article id="le-mot-parfait" data-screen-label="Le manuel 2" style="display:flex; flex-wrap:wrap; gap:70px; justify-content:center; min-height:calc(100vh - 78px); padding:90px 0 130px;">
+        <div style="flex:1 1 560px; max-width:660px; min-width:0;">
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:0 0 22px;">Le manuel</p>
+          <h2 style="font-family:var(--titre); font-weight:400; font-size:clamp(36px,5.4vw,62px); line-height:1.06; margin:0 0 24px; text-wrap:pretty;">Le mot parfait n'existe pas</h2>
+          <p style="font-family:var(--titre); font-style:italic; font-size:21px; line-height:1.5; color:var(--doux); margin:0 0 48px;">Chercher la phrase parfaite est souvent le meilleur moyen de ne rien dire du tout.</p>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><span style="float:left; font-family:var(--titre); font-size:86px; line-height:.74; padding:8px 14px 0 0;">E</span>n débat, j'avais l'impression que chaque mot pouvait se retourner contre moi. Alors je pesais tout. Je voulais le terme exact, l'argument imparable. Résultat : pendant que je cherchais, les autres parlaient.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">Ce réflexe est très courant chez les personnes qui réfléchissent beaucoup. Il part d'une bonne intention, être précis, mais il produit l'effet inverse : le silence, l'hésitation, ou une réponse arrivée trop tard.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">I</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Votre public n'attend pas la perfection</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;">Ceux qui vous écoutent ne comparent pas votre phrase à une version idéale qui n'existe que dans votre tête. Ils veulent comprendre. Une idée simple, dite clairement et avec conviction, touche davantage qu'une phrase parfaite qui n'arrive jamais.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">Les orateurs que l'on admire ne trouvent pas toujours le mot parfait. Ils savent surtout continuer quand ils ne le trouvent pas.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">II</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Trois exercices pour débloquer la parole</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">La minute sans arrêt.</strong> Choisissez un objet autour de vous et parlez-en pendant une minute sans vous interrompre. Le but n'est pas d'être brillant, c'est d'apprendre à avancer.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Reformuler au lieu de chercher.</strong> Quand un mot ne vient pas, dites l'idée autrement : « c'est comme… », « autrement dit… ». Personne ne remarquera le mot manquant.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;"><strong style="font-weight:700;">La pause plutôt que le « euh ».</strong> Un silence d'une seconde paraît réfléchi. Un « euh » paraît hésitant. Remplacez l'un par l'autre et votre discours gagne immédiatement en assurance.</p>
+
+          <p style="font-family:var(--titre); font-style:italic; font-size:29px; line-height:1.42; text-align:center; margin:66px auto 0; max-width:540px;">Mieux vaut une idée claire aujourd'hui qu'une phrase parfaite demain.</p>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:50px 0 0; color:var(--doux);">Ces exercices font partie de ceux que l'on pratique en groupe pendant le cours, avec un retour à chaque passage. <a href="#le-cours" style="font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--encre); white-space:nowrap;">Le cours ›</a></p>
+        </div>
+        <sc-if value="{{ notesEnMarge }}" hint-placeholder-val="{{ true }}">
+          <aside style="flex:0 1 240px; align-self:flex-start; position:sticky; top:118px; background:var(--voile); padding:28px 26px; font-family:var(--texte);">
+            <p style="font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--doux); margin:0 0 20px;">Dans la même veine</p>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <a href="#le-trac" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Le trac n'est pas votre ennemi</a>
+              <a href="#gagner-un-debat" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Gagner un débat ne veut pas dire convaincre</a>
+              <a href="#savoir-ne-suffit-pas" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Savoir ne suffit pas</a>
+            </div>
+          </aside>
+        </sc-if>
+      </article>
+
+      </sc-if>
+
+      <sc-if value="{{ v4 }}" hint-placeholder-val="{{ false }}">
+      <article id="le-trac" data-screen-label="Le manuel 3" style="display:flex; flex-wrap:wrap; gap:70px; justify-content:center; min-height:calc(100vh - 78px); padding:90px 0 130px;">
+        <div style="flex:1 1 560px; max-width:660px; min-width:0;">
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:0 0 22px;">Le manuel</p>
+          <h2 style="font-family:var(--titre); font-weight:400; font-size:clamp(36px,5.4vw,62px); line-height:1.06; margin:0 0 24px; text-wrap:pretty;">Le trac n'est pas votre ennemi</h2>
+          <p style="font-family:var(--titre); font-style:italic; font-size:21px; line-height:1.5; color:var(--doux); margin:0 0 48px;">Cœur qui accélère, mains moites, trou noir : ce que votre corps essaie de vous dire, et comment le calmer.</p>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;"><span style="float:left; font-family:var(--titre); font-size:86px; line-height:.74; padding:8px 14px 0 0;">A</span>u lycée, le trac m'accompagnait à chaque présentation. Longtemps, j'ai cru qu'il fallait le faire disparaître pour bien parler. En réalité, même les orateurs expérimentés le ressentent. La différence, c'est qu'ils ont appris à le gérer.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">I</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Pourquoi on a le trac</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;">Face à un public, le corps réagit comme face à un danger : le cœur accélère, la respiration devient courte, l'attention se rétrécit. C'est pour cela qu'une idée claire cinq minutes avant semble soudain inaccessible. Votre cerveau n'a rien oublié, il est simplement occupé à vous protéger.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">Bonne nouvelle : cette énergie peut être canalisée. Un peu de trac rend plus attentif et plus vivant. Le but n'est pas de ne plus rien ressentir, c'est de ne plus être paralysé.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">II</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Avant de parler</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Respirez lentement.</strong> Inspirez par le nez pendant environ quatre secondes, puis expirez plus longtemps, environ six secondes. Une expiration longue aide le corps à ralentir.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Préparez vos trente premières secondes.</strong> C'est le moment où le trac est le plus fort. Si le début est solide, le reste suit beaucoup plus facilement.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;"><strong style="font-weight:700;">Répétez à voix haute.</strong> Relire dans sa tête ne suffit pas. La bouche aussi a besoin d'entraînement.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">III</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Pendant que vous parlez</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Cherchez les visages bienveillants.</strong> Dans chaque salle, quelques personnes hochent la tête. Parlez-leur.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Ralentissez.</strong> Le trac accélère le débit. Ce qui vous paraît trop lent est souvent le bon rythme pour le public.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;"><strong style="font-weight:700;">Ancrez-vous.</strong> Pieds à plat, épaules relâchées. Un corps stable rassure autant celui qui parle que ceux qui écoutent.</p>
+
+          <div style="background:var(--voile); padding:34px 36px; margin:56px 0 0;">
+            <p style="font-family:var(--texte); font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--doux); margin:0 0 16px;">À retenir</p>
+            <p style="font-family:var(--texte); font-size:18px; line-height:1.85; margin:0;">Le trac diminue avec la répétition. Chaque prise de parole rend la suivante plus facile. C'est ce que j'ai vécu : à force de présentations, le trac est devenu un signal, plus un obstacle.</p>
+          </div>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:44px 0 0; color:var(--doux);">Le cours offre justement ce que l'on trouve rarement ailleurs : un cadre bienveillant pour prendre la parole souvent, et progresser à chaque fois. <a href="#le-cours" style="font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--encre); white-space:nowrap;">Le cours ›</a></p>
+        </div>
+        <sc-if value="{{ notesEnMarge }}" hint-placeholder-val="{{ true }}">
+          <aside style="flex:0 1 240px; align-self:flex-start; position:sticky; top:118px; background:var(--voile); padding:28px 26px; font-family:var(--texte);">
+            <p style="font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--doux); margin:0 0 20px;">Dans la même veine</p>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <a href="#savoir-ne-suffit-pas" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Savoir ne suffit pas</a>
+              <a href="#entretien-parcours" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Entretien : arrêtez de raconter votre parcours</a>
+              <a href="#le-cours" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Le cours d'éloquence</a>
+            </div>
+          </aside>
+        </sc-if>
+      </article>
+
+      </sc-if>
+
+      <sc-if value="{{ v5 }}" hint-placeholder-val="{{ false }}">
+      <article id="entretien-parcours" data-screen-label="L'audience" style="display:flex; flex-wrap:wrap; gap:70px; justify-content:center; min-height:calc(100vh - 78px); padding:90px 0 130px;">
+        <div style="flex:1 1 560px; max-width:660px; min-width:0;">
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:0 0 22px;">L'audience</p>
+          <h2 style="font-family:var(--titre); font-weight:400; font-size:clamp(34px,4.8vw,56px); line-height:1.08; margin:0 0 24px; text-wrap:pretty;">Entretien : arrêtez de raconter votre parcours</h2>
+          <p style="font-family:var(--titre); font-style:italic; font-size:21px; line-height:1.5; color:var(--doux); margin:0 0 48px;">Le recruteur ne cherche pas votre biographie. Il cherche la réponse à son problème.</p>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><span style="float:left; font-family:var(--titre); font-size:86px; line-height:.74; padding:8px 14px 0 0;">P</span>our un poste d'assistant administratif, j'ai commis l'erreur la plus courante en entretien : j'ai raconté mon parcours dans l'ordre chronologique, du début à la fin. J'ai oublié de dire que je maîtrisais plusieurs des tâches que l'entreprise recherchait. Elles étaient pourtant sur mon CV. Je ne l'ai simplement pas exploité.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">Le recruteur, lui, a une question en tête : « Est-ce que cette personne peut faire ce dont j'ai besoin ? » Tout ce qui ne répond pas à cette question dilue votre message.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">I</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">La méthode en quatre étapes</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Décortiquez l'offre.</strong> Soulignez les trois à cinq compétences que l'entreprise demande. Pour un poste administratif, par exemple : gestion d'agenda, rédaction de courriers, tableurs, accueil.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Associez chaque compétence à une preuve.</strong> Pour chacune, trouvez dans votre CV une expérience concrète qui la démontre. C'est votre fiche de préparation.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Racontez en Situation, Action, Résultat.</strong> « Dans tel contexte, j'ai fait ceci, et voici ce que ça a donné. » Court, concret, vérifiable.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;"><strong style="font-weight:700;">Préparez un « parlez-moi de vous » en une minute.</strong> Qui vous êtes, ce que vous savez faire pour eux, et pourquoi ce poste. Pas votre vie depuis l'école primaire.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">II</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">La question qui sauve un entretien</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">À la fin, quand le recruteur vous demande si vous avez des questions, vous pouvez dire : « Y a-t-il une compétence importante pour ce poste dont nous n'avons pas encore parlé ? » C'est votre dernière chance de rattraper un oubli. Avec cette question, je n'aurais pas quitté mon entretien avec l'essentiel encore en poche.</p>
+
+          <p style="font-family:var(--titre); font-style:italic; font-size:29px; line-height:1.42; text-align:center; margin:66px auto 0; max-width:540px;">Votre CV dit ce que vous avez fait. L'entretien doit dire ce que vous allez faire pour eux.</p>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:50px 0 0; color:var(--doux);">Dans le cours, on s'entraîne à des simulations d'entretien avec un retour précis : ce qui convainc, ce qui dilue, ce qui manque. <a href="#le-cours" style="font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--encre); white-space:nowrap;">Le cours ›</a></p>
+        </div>
+        <sc-if value="{{ notesEnMarge }}" hint-placeholder-val="{{ true }}">
+          <aside style="flex:0 1 240px; align-self:flex-start; position:sticky; top:118px; background:var(--voile); padding:28px 26px; font-family:var(--texte);">
+            <p style="font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--doux); margin:0 0 20px;">Dans la même veine</p>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <a href="#jaurais-du-dire-ca" style="font-family:var(--titre); font-size:17px; line-height:1.4;">J'aurais dû dire ça</a>
+              <a href="#le-trac" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Le trac n'est pas votre ennemi</a>
+              <a href="#le-cours" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Le cours d'éloquence</a>
+            </div>
+          </aside>
+        </sc-if>
+      </article>
+
+      </sc-if>
+
+      <sc-if value="{{ v6 }}" hint-placeholder-val="{{ false }}">
+      <article id="gagner-un-debat" data-screen-label="La contradiction" style="display:flex; flex-wrap:wrap; gap:70px; justify-content:center; min-height:calc(100vh - 78px); padding:90px 0 130px;">
+        <div style="flex:1 1 560px; max-width:660px; min-width:0;">
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:0 0 22px;">La contradiction</p>
+          <h2 style="font-family:var(--titre); font-weight:400; font-size:clamp(34px,4.8vw,56px); line-height:1.08; margin:0 0 24px; text-wrap:pretty;">Gagner un débat ne veut pas dire convaincre</h2>
+          <p style="font-family:var(--titre); font-style:italic; font-size:21px; line-height:1.5; color:var(--doux); margin:0 0 48px;">On peut remporter une discussion et laisser l'autre exactement là où il était.</p>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><span style="float:left; font-family:var(--titre); font-size:86px; line-height:.74; padding:8px 14px 0 0;">I</span>maginez deux personnes qui débattent. À la fin, l'une n'a plus d'arguments et finit par dire : « D'accord, tu as gagné. » Techniquement, le débat est remporté. Mais qu'a-t-on réellement obtenu ?</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">Très souvent, la personne qui a « perdu » repart avec exactement la même opinion. Elle s'est tue, elle n'a pas changé d'avis. Pour moi, ce n'est pas une victoire.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">I</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Ma définition de la victoire</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;">La vraie victoire, c'est quand l'autre commence lui-même à défendre votre idée. Quand il ne dit pas « tu as gagné », mais « je n'avais jamais vu les choses comme ça ». Il peut perdre le débat, ce qui compte, c'est qu'il ait changé de point de vue.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">Cette ambition change complètement la manière de débattre. On ne cherche plus à écraser, on cherche à faire voir.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">II</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Comment y arriver</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Écoutez vraiment.</strong> On ne peut pas faire bouger quelqu'un sans comprendre d'où il part.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Reformulez son argument.</strong> « Si je comprends bien, tu penses que… » L'autre se sent compris, et baisse sa garde.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Partez d'un terrain commun.</strong> Trouvez le point sur lequel vous êtes d'accord et construisez à partir de là.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Faites ressentir, pas seulement comprendre.</strong> Un exemple concret, une histoire, une image valent mieux que trois statistiques récitées.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;"><strong style="font-weight:700;">Laissez l'autre conclure.</strong> Une idée que l'on découvre soi-même se défend beaucoup plus volontiers qu'une idée imposée.</p>
+
+          <p style="font-family:var(--titre); font-style:italic; font-size:29px; line-height:1.42; text-align:center; margin:66px auto; max-width:540px;">Parler, ce n'est pas simplement passer une information. C'est faire ressentir cette information.</p>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">Cette logique vaut bien au-delà des débats. Face à un recruteur, à un client, à un jury ou à un collègue, le but reste le même : pas qu'on vous donne raison, mais qu'on voie ce que vous voyez.</p>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:44px 0 0; color:var(--doux);">Le débat occupe une place centrale dans mon cours : on y apprend à argumenter, à écouter et à convaincre pour de vrai. <a href="#le-cours" style="font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--encre); white-space:nowrap;">Le cours ›</a></p>
+        </div>
+        <sc-if value="{{ notesEnMarge }}" hint-placeholder-val="{{ true }}">
+          <aside style="flex:0 1 240px; align-self:flex-start; position:sticky; top:118px; background:var(--voile); padding:28px 26px; font-family:var(--texte);">
+            <p style="font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--doux); margin:0 0 20px;">Dans la même veine</p>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <a href="#le-mot-parfait" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Le mot parfait n'existe pas</a>
+              <a href="#jaurais-du-dire-ca" style="font-family:var(--titre); font-size:17px; line-height:1.4;">J'aurais dû dire ça</a>
+              <a href="#le-cours" style="font-family:var(--titre); font-size:17px; line-height:1.4;">Le cours d'éloquence</a>
+            </div>
+          </aside>
+        </sc-if>
+      </article>
+
+      </sc-if>
+
+      <sc-if value="{{ v7 }}" hint-placeholder-val="{{ false }}">
+      <article id="le-cours" data-screen-label="L'inscription" style="display:flex; flex-wrap:wrap; gap:70px; justify-content:center; min-height:calc(100vh - 78px); padding:90px 0 120px;">
+        <div style="flex:1 1 560px; max-width:660px; min-width:0;">
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:0 0 22px;">L'inscription</p>
+          <h2 style="font-family:var(--titre); font-weight:400; font-size:clamp(36px,5.4vw,62px); line-height:1.06; margin:0 0 24px; text-wrap:pretty;">Le cours d'éloquence</h2>
+          <p style="font-family:var(--titre); font-style:italic; font-size:21px; line-height:1.5; color:var(--doux); margin:0 0 48px;">Apprendre à parler, ça s'apprend. Et ça s'apprend en pratiquant.</p>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;"><span style="float:left; font-family:var(--titre); font-size:86px; line-height:.74; padding:8px 14px 0 0;">J</span>'ai créé ce cours parce que je connais la frustration de sortir d'une présentation, d'un débat ou d'un entretien en me disant « j'aurais dû dire ça ». Mon objectif est simple : que vous n'ayez plus à vous le dire.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">I</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Pour qui ?</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Les étudiants</strong> qui préparent des oraux, des présentations ou des concours.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 26px;"><strong style="font-weight:700;">Les jeunes actifs</strong> qui veulent réussir leurs entretiens et prendre leur place en réunion.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;"><strong style="font-weight:700;">Les entrepreneurs</strong> qui doivent présenter leur projet et convaincre clients ou investisseurs.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">II</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Ce qu'on y travaille</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 14px;">Structurer ses idées pour être clair du premier coup.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 14px;">Gérer le trac avant et pendant la prise de parole.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 14px;">Parler sans chercher le mot parfait.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0 0 14px;">Réussir un entretien en mettant en valeur ce qui compte.</p>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">Débattre et convaincre, en faisant ressentir ses idées.</p>
+
+          <p style="font-family:var(--texte); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--doux); margin:56px 0 14px;">III</p>
+          <h3 style="font-family:var(--titre); font-weight:400; font-size:30px; line-height:1.2; margin:0 0 22px;">Comment ça se passe</h3>
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:0;">Le cours se déroule en présentiel, en français, en petit groupe. Chaque séance repose sur la pratique : on prend la parole, on reçoit un retour, on recommence. C'est exactement ainsi que j'ai progressé moi-même, et c'est la méthode la plus efficace que je connaisse.</p>
+
+          <div style="background:var(--voile); padding:34px 36px; margin:56px 0 0;">
+            <p style="font-family:var(--texte); font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--doux); margin:0 0 16px;">Vous êtes parent ?</p>
+            <p style="font-family:var(--texte); font-size:18px; line-height:1.85; margin:0;">Savoir s'exprimer est une compétence que l'école enseigne rarement, alors qu'elle compte à chaque étape : exposés, oraux, concours, études supérieures, puis premiers entretiens. Inscrire votre enfant, c'est lui offrir un avantage qu'il gardera toute sa vie.</p>
+          </div>
+
+          <p style="font-family:var(--texte); font-size:18px; line-height:1.9; margin:46px 0 0;"><strong style="font-weight:700;">Prochaines sessions et inscriptions :</strong> écrivez-moi à lorateur@gmail.com ou sur WhatsApp +230 55 66 77 88.</p>
+          <p style="font-family:var(--titre); font-style:italic; font-size:29px; line-height:1.42; margin:40px 0 0;">Être dans l'éloquence, c'est créer sa propre chance.</p>
+        </div>
+        <sc-if value="{{ notesEnMarge }}" hint-placeholder-val="{{ true }}">
+          <aside style="flex:0 1 240px; align-self:flex-start; position:sticky; top:118px; background:var(--voile); padding:28px 26px; font-family:var(--texte);">
+            <p style="font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--doux); margin:0 0 20px;">L'auteur</p>
+            <p style="font-size:15px; line-height:1.7; color:var(--doux); margin:0;">Je m'appelle Sergio. Au lycée, j'étais l'élève timide qui savait quoi dire mais n'arrivait pas à le dire. L'éloquence n'est pas un don : c'est une compétence.</p>
+          </aside>
+        </sc-if>
+      </article>
+
+      </sc-if>
+
+    </main>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;intensiteMouvement&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:100,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:5,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Mouvement&quot;},&quot;fondAnime&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mouvement&quot;},&quot;notesEnMarge&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mise en page&quot;}}">
+class Component extends DCLogic {
+  state = { sombre: false, page: "accueil" };
+
+  pages = ["jaurais-du-dire-ca","savoir-ne-suffit-pas","le-mot-parfait","le-trac","entretien-parcours","gagner-un-debat","le-cours"];
+
+  sync = () => {
+    const h = decodeURIComponent((location.hash || "").slice(1));
+    const page = this.pages.indexOf(h) >= 0 ? h : "accueil";
+    this.setState({ page });
+    window.scrollTo(0, 0);
+  };
+
+  constructor(props){
+    super(props);
+    this.filRef = React.createRef();
+    this.px = 0; this.py = 0; this.cible = 0; this.pause = 0;
+    this.cibles = [ {x:-0.34,y:0}, {x:0,y:0.3}, {x:0,y:-0.3}, {x:0.34,y:0}, {x:-0.2,y:0.22}, {x:0.2,y:-0.22} ];
+  }
+
+  componentDidMount(){
+    this.sync();
+    window.addEventListener("hashchange", this.sync);
+    let choix = null;
+    try { choix = localStorage.getItem("orateur-theme"); } catch(e){ choix = null; }
+    const sombre = choix ? choix === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    this.appliquer(sombre);
+  }
+
+  componentWillUnmount(){
+    if(this.minuteur) clearInterval(this.minuteur);
+    window.removeEventListener("hashchange", this.sync);
+  }
+
+  appliquer = (sombre) => {
+    document.documentElement.setAttribute("data-theme", sombre ? "dark" : "light");
+    this.setState({ sombre });
+  };
+
+  basculer = () => {
+    const s = !this.state.sombre;
+    try { localStorage.setItem("orateur-theme", s ? "dark" : "light"); } catch(e){}
+    this.appliquer(s);
+  };
+
+  deplacer = () => {
+    const el = this.filRef.current;
+    if(!el) return;
+    const k = (this.props.intensiteMouvement ?? 40) / 100;
+    const c = this.cibles[this.cible];
+    this.cible = (this.cible + 1) % this.cibles.length;
+    const x = c.x * window.innerWidth * k;
+    const y = c.y * window.innerHeight * k;
+    el.style.transform = "translate3d(" + x.toFixed(0) + "px," + y.toFixed(0) + "px,0)";
+  };
+
+  renderVals(){
+    const p = this.state.page;
+    return {
+      vAccueil: p === "accueil",
+      v1: p === "jaurais-du-dire-ca",
+      v2: p === "savoir-ne-suffit-pas",
+      v3: p === "le-mot-parfait",
+      v4: p === "le-trac",
+      v5: p === "entretien-parcours",
+      v6: p === "gagner-un-debat",
+      v7: p === "le-cours",
+      sombre: this.state.sombre,
+      clair: !this.state.sombre,
+      basculer: this.basculer,
+      themeLabel: this.state.sombre ? "Passer en mode clair" : "Passer en mode sombre",
+      filRef: this.filRef,
+      notesEnMarge: this.props.notesEnMarge ?? true,
+      fondAnime: this.props.fondAnime ?? true
+    };
+  }
+}
+</script>
+</body>
+</html>
